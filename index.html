@@ -26,6 +26,8 @@
     --pink-deep: #ad1a5e;
     --gold: #f0c24b;
     --gold-deep: #c79a2e;
+    --cash: #1c9c8a;
+    --cash-dark: #0e5f53;
     --metal: #5f4756;
     --metal-light: #7c5f6e;
     --metal-dark: #301f28;
@@ -75,7 +77,7 @@
   .money-piece.bill {
     width: 48px; height: 23px;
     border-radius: 3px;
-    background: linear-gradient(135deg, var(--pink), var(--pink-deep));
+    background: linear-gradient(135deg, var(--cash), var(--cash-dark));
     border: 1px solid rgba(240,194,75,0.7);
     box-shadow: 0 2px 8px rgba(0,0,0,0.4);
   }
@@ -162,19 +164,21 @@
     box-shadow: 0 6px 14px rgba(0,0,0,0.5);
   }
   .cash-stack.back {
-    width: 20%; height: 16%;
-    background: repeating-linear-gradient(0deg, var(--pink-deep) 0 3px, var(--metal-dark) 3px 6px);
+    width: 19%; height: 15%;
+    background: repeating-linear-gradient(0deg, var(--cash) 0 3px, var(--cash-dark) 3px 6px);
     border: 1px solid rgba(240,194,75,0.35);
-    opacity: 0.55;
+    opacity: 0.6;
   }
-  .cash-stack.back.b1 { left: 20%; top: 20%; transform: rotate(-5deg); }
-  .cash-stack.back.b2 { left: 44%; top: 15%; transform: rotate(3deg); }
-  .cash-stack.back.b3 { left: 65%; top: 22%; transform: rotate(-2deg); }
+  .cash-stack.back.b1 { left: 8%;  top: 16%; transform: rotate(-5deg); }
+  .cash-stack.back.b2 { left: 28%; top: 10%; transform: rotate(3deg); }
+  .cash-stack.back.b3 { left: 48%; top: 14%; transform: rotate(-2deg); }
+  .cash-stack.back.b4 { left: 67%; top: 10%; transform: rotate(4deg); }
+  .cash-stack.back.b5 { left: 82%; top: 18%; width: 16%; transform: rotate(-3deg); }
 
   /* front row — bigger, brighter */
   .cash-stack.front {
-    width: 28%; height: 26%;
-    background: repeating-linear-gradient(0deg, var(--pink) 0 4px, var(--pink-deep) 4px 8px);
+    width: 26%; height: 26%;
+    background: repeating-linear-gradient(0deg, var(--cash) 0 4px, var(--cash-dark) 4px 8px);
     border: 1px solid rgba(240,194,75,0.6);
   }
   .cash-stack.front::after {
@@ -185,12 +189,28 @@
     font-family: 'Pinyon Script', cursive;
     font-size: 1.3rem;
   }
-  .cash-stack.front.f1 { left: 10%; bottom: 20%; transform: rotate(-4deg); }
-  .cash-stack.front.f2 { left: 38%; bottom: 18%; height: 32%; transform: rotate(2deg); }
-  .cash-stack.front.f3 { left: 62%; bottom: 22%; height: 22%; transform: rotate(-3deg); }
+  .cash-stack.front.f1 { left: 4%;  bottom: 18%; transform: rotate(-4deg); }
+  .cash-stack.front.f2 { left: 27%; bottom: 15%; height: 33%; transform: rotate(2deg); }
+  .cash-stack.front.f3 { left: 50%; bottom: 19%; height: 22%; transform: rotate(-3deg); }
+  .cash-stack.front.f4 { left: 71%; bottom: 16%; height: 29%; transform: rotate(3deg); }
 
-  /* coin pile, front-most */
-  .coin-pile { position: absolute; bottom: 6%; left: 15%; width: 70%; height: 16%; }
+  /* stacked gold bars, bullion-pyramid style */
+  .gold-bars { position: absolute; left: 6%; bottom: 6%; width: 30%; height: 22%; }
+  .gold-bar {
+    position: absolute;
+    width: 46%; height: 34%;
+    background: linear-gradient(160deg, #fff3c9 0%, var(--gold) 45%, var(--gold-deep) 100%);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 2px;
+    clip-path: polygon(6% 0, 94% 0, 100% 100%, 0 100%);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.5);
+  }
+  .gold-bar:nth-child(1) { left: 2%;  bottom: 0; }
+  .gold-bar:nth-child(2) { left: 52%; bottom: 0; }
+  .gold-bar:nth-child(3) { left: 27%; bottom: 32%; }
+
+  /* coin pile, front-most, spread wide so the floor reads full */
+  .coin-pile { position: absolute; bottom: 4%; left: 4%; width: 92%; height: 18%; }
   .coin {
     position: absolute;
     bottom: 0;
@@ -200,14 +220,17 @@
     border: 1px solid rgba(255,255,255,0.5);
     box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   }
-  .coin:nth-child(1) { left: 2%; }
-  .coin:nth-child(2) { left: 14%; width: 26px; height: 26px; }
-  .coin:nth-child(3) { left: 28%; bottom: 8px; }
-  .coin:nth-child(4) { left: 40%; width: 24px; height: 24px; }
-  .coin:nth-child(5) { left: 53%; bottom: 4px; }
-  .coin:nth-child(6) { left: 65%; width: 27px; height: 27px; }
-  .coin:nth-child(7) { left: 79%; bottom: 6px; }
-  .coin:nth-child(8) { left: 90%; width: 20px; height: 20px; }
+  .coin:nth-child(1)  { left: 1%; }
+  .coin:nth-child(2)  { left: 10%; width: 27px; height: 27px; }
+  .coin:nth-child(3)  { left: 20%; bottom: 9px; }
+  .coin:nth-child(4)  { left: 30%; width: 24px; height: 24px; }
+  .coin:nth-child(5)  { left: 39%; bottom: 5px; }
+  .coin:nth-child(6)  { left: 48%; width: 28px; height: 28px; }
+  .coin:nth-child(7)  { left: 58%; bottom: 7px; }
+  .coin:nth-child(8)  { left: 67%; width: 22px; height: 22px; }
+  .coin:nth-child(9)  { left: 76%; bottom: 4px; }
+  .coin:nth-child(10) { left: 84%; width: 26px; height: 26px; }
+  .coin:nth-child(11) { left: 92%; bottom: 8px; width: 20px; height: 20px; }
 
   /* the round door */
   .vault-door {
@@ -466,12 +489,19 @@
         <div class="cash-stack back b1"></div>
         <div class="cash-stack back b2"></div>
         <div class="cash-stack back b3"></div>
+        <div class="cash-stack back b4"></div>
+        <div class="cash-stack back b5"></div>
         <div class="cash-stack front f1"></div>
         <div class="cash-stack front f2"></div>
         <div class="cash-stack front f3"></div>
+        <div class="cash-stack front f4"></div>
+        <div class="gold-bars">
+          <div class="gold-bar"></div><div class="gold-bar"></div><div class="gold-bar"></div>
+        </div>
         <div class="coin-pile">
           <div class="coin"></div><div class="coin"></div><div class="coin"></div><div class="coin"></div>
           <div class="coin"></div><div class="coin"></div><div class="coin"></div><div class="coin"></div>
+          <div class="coin"></div><div class="coin"></div><div class="coin"></div>
         </div>
       </div>
 
