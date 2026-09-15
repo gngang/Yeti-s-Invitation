@@ -239,6 +239,20 @@
   .gold-bar.row-top:nth-of-type(14) { left: 66%; }
   .gold-bar.row-top:nth-of-type(15) { left: 78%; }
 
+  /* small gold bars tucked directly into the gaps between cash rows */
+  .gold-bar.filler {
+    position: absolute;
+    width: 13%; height: 10%;
+  }
+  .gold-bar.filler.g1 { left: 1%;  top: 2%;  transform: rotate(-6deg); }
+  .gold-bar.filler.g2 { left: 30%; top: 0%;  transform: rotate(4deg); }
+  .gold-bar.filler.g3 { left: 58%; top: 2%;  transform: rotate(-3deg); }
+  .gold-bar.filler.g4 { left: 84%; top: 4%;  transform: rotate(5deg); }
+  .gold-bar.filler.g5 { left: 15%; top: 17%; transform: rotate(3deg); }
+  .gold-bar.filler.g6 { left: 44%; top: 15%; transform: rotate(-4deg); }
+  .gold-bar.filler.g7 { left: 71%; top: 18%; transform: rotate(4deg); }
+  .gold-bar.filler.g8 { left: 90%; top: 19%; width: 11%; transform: rotate(-5deg); }
+
   /* the round door */
   .vault-door {
     position: absolute;
@@ -250,7 +264,6 @@
   }
   .vault-scene.opened .vault-door {
     transform: rotateY(-112deg);
-    filter: drop-shadow(0 18px 40px rgba(0,0,0,0.55));
   }
   .vault-door svg { width: 100%; height: 100%; display: block; }
 
@@ -502,12 +515,20 @@
         <div class="cash-stack back b4"></div>
         <div class="cash-stack back b5"></div>
         <div class="cash-stack back b6"></div>
+        <div class="gold-bar filler g1"></div>
+        <div class="gold-bar filler g2"></div>
+        <div class="gold-bar filler g3"></div>
+        <div class="gold-bar filler g4"></div>
         <div class="cash-stack mid m1"></div>
         <div class="cash-stack mid m2"></div>
         <div class="cash-stack mid m3"></div>
         <div class="cash-stack mid m4"></div>
         <div class="cash-stack mid m5"></div>
         <div class="cash-stack mid m6"></div>
+        <div class="gold-bar filler g5"></div>
+        <div class="gold-bar filler g6"></div>
+        <div class="gold-bar filler g7"></div>
+        <div class="gold-bar filler g8"></div>
         <div class="cash-stack front f1"></div>
         <div class="cash-stack front f2"></div>
         <div class="cash-stack front f3"></div>
