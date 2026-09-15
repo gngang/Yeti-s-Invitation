@@ -3,61 +3,107 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ms. Moni's Birthday</title>
+<title>Ms. Moni Turns 21</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /*
     ══════════════════════════════════════════════════════════
     SETUP — replace before sending
-    1. Swap /invite-bill.png (below, next to this HTML file when
-       you host it) for the real $100-bill graphic with her face
-       and the party info. Keep it roughly 2:1 (wide:tall).
-    2. Firebase + EmailJS config is at the bottom of this file —
-       see chat for step-by-step setup instructions.
+    1. Swap /invite-bill.png (next to this HTML file when hosted)
+       for the real $100-bill graphic with her face + party info.
+    2. Firebase + EmailJS config is at the bottom — see chat for
+       setup steps.
     3. Change CREATOR_PIN before sharing the link.
+    4. Fill in the TIME once it's set.
     ══════════════════════════════════════════════════════════
   */
   :root {
-    --ink: #0a1118;
-    --steel: #2a3542;
-    --steel-light: #3f4e5f;
-    --steel-dark: #161d25;
-    --teal: #15a094;
-    --teal-dark: #0b6b63;
-    --teal-glow: rgba(21,160,148,0.35);
-    --gold: #cba535;
-    --denim: #35577e;
-    --paper: #f2ead2;
-    --paper-line: rgba(10,17,24,0.08);
-    --ok: #15a094;
-    --no: #a3402f;
+    --bg: #22081a;
+    --bg2: #3b1229;
+    --pink: #ff3d94;
+    --pink-soft: #ff8ec2;
+    --pink-deep: #ad1a5e;
+    --gold: #f0c24b;
+    --gold-deep: #c79a2e;
+    --metal: #5f4756;
+    --metal-light: #7c5f6e;
+    --metal-dark: #301f28;
+    --paper: #fff6f9;
+    --paper-line: rgba(35,8,26,0.1);
+    --denim: #3d5a80;
+    --no: #c0392b;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html, body { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
 
   body {
-    background: var(--ink);
+    background: var(--bg);
     background-image:
-      radial-gradient(ellipse at 50% 0%, #142330 0%, transparent 55%),
-      radial-gradient(ellipse at 15% 90%, #0e1a22 0%, transparent 50%);
+      radial-gradient(ellipse at 50% 0%, #4a1533 0%, transparent 58%),
+      radial-gradient(ellipse at 10% 95%, #2c0e21 0%, transparent 50%);
     color: var(--paper);
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'Poppins', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
-  h1, h2, .display {
-    font-family: 'Fraunces', serif;
-    font-weight: 600;
+  .script {
+    font-family: 'Pinyon Script', cursive;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  h1.script { font-size: clamp(3.2rem, 11vw, 5.5rem); }
+  h2.script { font-size: clamp(2.4rem, 7vw, 3.2rem); }
+
+  /* full-page money — escapes the vault, fixed to the whole viewport */
+  .global-money-fall {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .money-piece {
+    position: absolute;
+    top: 0;
+    left: var(--left);
+    opacity: 0;
+    animation: moneyFall var(--fall-dur) linear var(--fall-delay) forwards;
+  }
+  .money-piece.bill {
+    width: 48px; height: 23px;
+    border-radius: 3px;
+    background: linear-gradient(135deg, var(--pink), var(--pink-deep));
+    border: 1px solid rgba(240,194,75,0.7);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .money-piece.bill::after {
+    content: '$';
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Pinyon Script', cursive;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.9);
+  }
+  .money-piece.coin {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff3c9, var(--gold) 50%, var(--gold-deep) 100%);
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+  @keyframes moneyFall {
+    0%   { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+    8%   { opacity: 1; }
+    100% { transform: translateY(112vh) translateX(var(--drift)) rotate(var(--spin)); opacity: 0.9; }
   }
 
   /* ── HERO / VAULT ── */
   #hero {
     min-height: 100vh;
     position: relative;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -65,21 +111,29 @@
     padding: 60px 20px 90px;
   }
 
-  .hero-plaque {
-    font-size: 0.72rem;
-    letter-spacing: 0.32em;
-    color: rgba(242,234,210,0.4);
-    margin-bottom: 40px;
+  .hero-title {
     text-align: center;
+    color: var(--pink-soft);
+    margin-bottom: 2px;
     opacity: 0;
-    animation: fadeUp 0.9s 0.2s ease forwards;
+    animation: fadeUp 0.9s 0.15s ease forwards;
+    text-shadow: 0 0 24px rgba(255,61,148,0.35);
+  }
+  .hero-sub {
+    text-align: center;
+    font-size: 0.8rem;
+    letter-spacing: 0.28em;
+    color: rgba(255,246,249,0.5);
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.35s ease forwards;
   }
 
   .vault-wrapper {
     position: relative;
     width: min(420px, 78vw);
     opacity: 0;
-    animation: fadeUp 1s 0.5s ease forwards;
+    animation: fadeUp 1s 0.55s ease forwards;
   }
 
   .vault-scene {
@@ -89,48 +143,73 @@
     perspective: 1100px;
   }
 
-  /* interior, revealed once the door swings */
   .vault-room {
     position: absolute;
     inset: 4%;
     border-radius: 50%;
     background:
-      radial-gradient(circle at 50% 40%, var(--teal-glow), transparent 65%),
-      var(--steel-dark);
-    box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+      radial-gradient(circle at 50% 38%, rgba(255,61,148,0.3), transparent 65%),
+      var(--metal-dark);
+    box-shadow: inset 0 0 44px rgba(0,0,0,0.65);
     z-index: 1;
     overflow: hidden;
   }
 
+  /* back row — smaller, dimmer, reads as receding into the vault */
   .cash-stack {
     position: absolute;
-    bottom: 8%;
-    width: 30%;
-    height: 26%;
-    background: repeating-linear-gradient(
-      0deg, var(--teal) 0 4px, var(--teal-dark) 4px 8px
-    );
-    border: 1px solid rgba(203,165,53,0.6);
     border-radius: 2px;
     box-shadow: 0 6px 14px rgba(0,0,0,0.5);
   }
-  .cash-stack::after {
-    content: '$';
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--gold);
-    font-family: 'Fraunces', serif;
-    font-size: 1.1rem;
-    opacity: 0.85;
+  .cash-stack.back {
+    width: 20%; height: 16%;
+    background: repeating-linear-gradient(0deg, var(--pink-deep) 0 3px, var(--metal-dark) 3px 6px);
+    border: 1px solid rgba(240,194,75,0.35);
+    opacity: 0.55;
   }
-  .cash-stack.s1 { left: 12%; transform: rotate(-4deg); }
-  .cash-stack.s2 { left: 38%; height: 32%; transform: rotate(2deg); }
-  .cash-stack.s3 { left: 62%; height: 22%; transform: rotate(-2deg); }
+  .cash-stack.back.b1 { left: 20%; top: 20%; transform: rotate(-5deg); }
+  .cash-stack.back.b2 { left: 44%; top: 15%; transform: rotate(3deg); }
+  .cash-stack.back.b3 { left: 65%; top: 22%; transform: rotate(-2deg); }
 
-  /* the round door itself */
+  /* front row — bigger, brighter */
+  .cash-stack.front {
+    width: 28%; height: 26%;
+    background: repeating-linear-gradient(0deg, var(--pink) 0 4px, var(--pink-deep) 4px 8px);
+    border: 1px solid rgba(240,194,75,0.6);
+  }
+  .cash-stack.front::after {
+    content: '$';
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold);
+    font-family: 'Pinyon Script', cursive;
+    font-size: 1.3rem;
+  }
+  .cash-stack.front.f1 { left: 10%; bottom: 20%; transform: rotate(-4deg); }
+  .cash-stack.front.f2 { left: 38%; bottom: 18%; height: 32%; transform: rotate(2deg); }
+  .cash-stack.front.f3 { left: 62%; bottom: 22%; height: 22%; transform: rotate(-3deg); }
+
+  /* coin pile, front-most */
+  .coin-pile { position: absolute; bottom: 6%; left: 15%; width: 70%; height: 16%; }
+  .coin {
+    position: absolute;
+    bottom: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff3c9, var(--gold) 50%, var(--gold-deep) 100%);
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  }
+  .coin:nth-child(1) { left: 2%; }
+  .coin:nth-child(2) { left: 14%; width: 26px; height: 26px; }
+  .coin:nth-child(3) { left: 28%; bottom: 8px; }
+  .coin:nth-child(4) { left: 40%; width: 24px; height: 24px; }
+  .coin:nth-child(5) { left: 53%; bottom: 4px; }
+  .coin:nth-child(6) { left: 65%; width: 27px; height: 27px; }
+  .coin:nth-child(7) { left: 79%; bottom: 6px; }
+  .coin:nth-child(8) { left: 90%; width: 20px; height: 20px; }
+
+  /* the round door */
   .vault-door {
     position: absolute;
     inset: 0;
@@ -139,27 +218,23 @@
     transition: transform 1.1s cubic-bezier(0.45, 0, 0.2, 1);
     filter: drop-shadow(0 18px 40px rgba(0,0,0,0.55));
   }
-  .vault-scene.opened .vault-door {
-    transform: rotateY(-112deg);
-  }
-
+  .vault-scene.opened .vault-door { transform: rotateY(-112deg); }
   .vault-door svg { width: 100%; height: 100%; display: block; }
 
   .vault-dial {
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 34%;
-    height: 34%;
+    width: 34%; height: 34%;
     cursor: pointer;
-    transition: transform 0.9s cubic-bezier(0.4, 0, 0.15, 1);
+    transition: transform 0.9s cubic-bezier(0.4, 0, 0.15, 1), opacity 0.5s ease;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     z-index: 4;
+    opacity: 1;
   }
-  .vault-scene.spinning .vault-dial {
-    transform: translate(-50%, -50%) rotate(900deg);
-  }
+  .vault-scene.spinning .vault-dial { transform: translate(-50%, -50%) rotate(900deg); }
+  .vault-scene.opened .vault-dial { opacity: 0; pointer-events: none; }
   .vault-dial svg { width: 100%; height: 100%; display: block; }
 
   .vault-hint {
@@ -167,52 +242,15 @@
     bottom: -13%;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    color: rgba(242,234,210,0.45);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    font-style: italic;
+    color: rgba(255,246,249,0.5);
     white-space: nowrap;
     animation: pulse 2.4s 1.6s ease infinite;
   }
   .vault-scene.spinning ~ .vault-hint,
   .vault-scene.opened ~ .vault-hint { display: none; }
-
-  /* falling money */
-  .falling-bills {
-    position: absolute;
-    inset: 0;
-    z-index: 6;
-    pointer-events: none;
-    overflow: hidden;
-  }
-  .bill {
-    position: absolute;
-    top: 0;
-    left: var(--left);
-    width: 44px;
-    height: 21px;
-    border-radius: 3px;
-    background: linear-gradient(135deg, #1c9c90, #0c5a53);
-    border: 1px solid rgba(203,165,53,0.55);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-    opacity: 0;
-    animation: billFall var(--fall-dur) linear var(--fall-delay) forwards;
-  }
-  .bill::after {
-    content: '$';
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.65rem;
-    color: rgba(203,165,53,0.85);
-    font-family: 'Fraunces', serif;
-  }
-  @keyframes billFall {
-    0%   { transform: translateY(-10%) translateX(0) rotate(0deg); opacity: 0; }
-    8%   { opacity: 1; }
-    100% { transform: translateY(650%) translateX(var(--drift)) rotate(var(--spin)); opacity: 0.85; }
-  }
 
   /* the invite bill — her real PNG lands here */
   .invite-bill-wrap {
@@ -235,285 +273,166 @@
     100% { top: 32%; transform: translateX(-50%) rotate(0deg); }
   }
   .invite-bill-wrap img {
-    width: 100%;
-    display: block;
-    border-radius: 6px;
-    box-shadow: 0 24px 48px rgba(0,0,0,0.55), 0 0 0 1px rgba(203,165,53,0.5);
+    width: 100%; display: block; border-radius: 6px;
+    box-shadow: 0 24px 48px rgba(0,0,0,0.55), 0 0 0 1px rgba(240,194,75,0.6);
   }
   .invite-bill-fallback {
-    width: 100%;
-    aspect-ratio: 2.35 / 1;
-    background: linear-gradient(135deg, #1c9c90, #0c5a53);
+    width: 100%; aspect-ratio: 2.35 / 1;
+    background: linear-gradient(135deg, var(--pink), var(--pink-deep));
     border: 2px solid var(--gold);
     border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 16px;
-    font-size: 0.72rem;
-    line-height: 1.5;
-    letter-spacing: 0.05em;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 16px;
+    font-size: 0.75rem; line-height: 1.5;
     color: var(--paper);
     box-shadow: 0 24px 48px rgba(0,0,0,0.55);
   }
 
   .scroll-hint {
     margin-top: 56px;
-    color: rgba(242,234,210,0.4);
+    color: rgba(255,246,249,0.45);
     font-size: 0.85rem;
     letter-spacing: 0.15em;
+    font-style: italic;
     display: none;
     flex-direction: column;
     align-items: center;
     gap: 8px;
   }
   .scroll-hint.show { display: flex; animation: fadeUp 0.8s ease forwards, pulse 2.5s 0.8s ease infinite; }
-  .scroll-hint .arrow { width: 1px; height: 30px; background: linear-gradient(to bottom, var(--teal), transparent); }
+  .scroll-hint .arrow { width: 1px; height: 30px; background: linear-gradient(to bottom, var(--pink), transparent); }
 
   /* ── DETAILS ── */
   #details { padding: 40px 20px 80px; display: flex; flex-direction: column; align-items: center; }
   .details-container { width: min(560px, 92vw); }
 
-  .section-heading {
-    font-size: clamp(1.7rem, 4vw, 2.3rem);
-    text-align: center;
-    color: var(--paper);
-    margin-bottom: 6px;
-  }
+  .section-heading { text-align: center; color: var(--pink-soft); margin-bottom: 2px; }
   .section-sub {
     text-align: center;
-    color: rgba(242,234,210,0.4);
+    color: rgba(255,246,249,0.45);
     font-size: 0.8rem;
     letter-spacing: 0.1em;
-    margin-bottom: 36px;
+    margin-bottom: 32px;
   }
 
   .detail-card {
     background: var(--paper);
-    color: var(--ink);
-    border-radius: 4px;
+    color: #2a0e1f;
+    border-radius: 6px;
     padding: 40px 32px;
     box-shadow: 0 24px 60px rgba(0,0,0,0.45);
-    position: relative;
   }
-
-  .detail-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px 20px;
-  }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 20px; }
   .detail-row { border-bottom: 1px dashed var(--paper-line); padding-bottom: 14px; }
   .detail-row.full { grid-column: 1 / -1; }
-  .detail-label {
-    font-size: 0.62rem;
-    letter-spacing: 0.22em;
-    color: var(--teal-dark);
-    margin-bottom: 6px;
-  }
-  .detail-value {
-    font-family: 'Fraunces', serif;
-    font-size: 1.15rem;
-    color: var(--ink);
-  }
-  .detail-value.tbd { color: #8a7f60; font-style: italic; font-size: 1rem; }
+  .detail-label { font-size: 0.65rem; letter-spacing: 0.2em; color: var(--pink-deep); margin-bottom: 6px; font-weight: 600; }
+  .detail-value { font-size: 1.1rem; color: #2a0e1f; font-weight: 500; }
+  .detail-value.tbd { color: #a68a75; font-style: italic; font-size: 1rem; font-weight: 400; }
 
   /* ── SCHEDULE ── */
   #schedule { padding: 20px 20px 80px; display: flex; flex-direction: column; align-items: center; }
   .schedule-container { width: min(560px, 92vw); }
-  .schedule-card {
-    background: var(--paper);
-    color: var(--ink);
-    border-radius: 4px;
-    padding: 40px 32px;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.45);
-  }
+  .schedule-card { background: var(--paper); color: #2a0e1f; border-radius: 6px; padding: 40px 32px; box-shadow: 0 24px 60px rgba(0,0,0,0.45); }
   .schedule-items { list-style: none; }
-  .schedule-item {
-    display: grid;
-    grid-template-columns: 90px 1fr;
-    gap: 16px;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--paper-line);
-  }
+  .schedule-item { display: grid; grid-template-columns: 90px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--paper-line); }
   .schedule-item:last-child { border-bottom: none; }
-  .schedule-time { font-size: 0.72rem; letter-spacing: 0.08em; color: var(--teal-dark); padding-top: 3px; }
-  .schedule-event { font-family: 'Fraunces', serif; font-size: 1.05rem; color: var(--ink); }
-  .schedule-desc { font-size: 0.85rem; color: #6b6248; margin-top: 2px; }
+  .schedule-time { font-size: 0.75rem; letter-spacing: 0.05em; color: var(--pink-deep); padding-top: 3px; font-weight: 600; }
+  .schedule-event { font-size: 1.05rem; color: #2a0e1f; font-weight: 600; }
+  .schedule-desc { font-size: 0.85rem; color: #8a7268; margin-top: 2px; }
 
   /* ── RSVP ── */
-  #rsvp { padding: 20px 20px 90px; display: flex; flex-direction: column; align-items: center; }
+  #rsvp { padding: 20px 20px 70px; display: flex; flex-direction: column; align-items: center; }
   .rsvp-container { width: min(560px, 92vw); }
-
-  .rsvp-card {
-    background: var(--steel);
-    border: 1px solid rgba(203,165,53,0.25);
-    border-radius: 4px;
-    padding: 44px 36px;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
-  }
+  .rsvp-card { background: var(--metal); border: 1px solid rgba(240,194,75,0.3); border-radius: 6px; padding: 44px 36px; box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
 
   .rsvp-field { margin-bottom: 20px; }
-  .rsvp-label {
-    display: block;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    color: var(--teal);
-    margin-bottom: 8px;
-  }
+  .rsvp-label { display: block; font-size: 0.68rem; letter-spacing: 0.15em; color: var(--pink-soft); margin-bottom: 8px; font-weight: 600; }
   .rsvp-input {
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 1.5px solid rgba(242,234,210,0.25);
-    padding: 8px 0;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 1rem;
-    color: var(--paper);
-    outline: none;
-    transition: border-color 0.3s;
+    width: 100%; background: transparent; border: none;
+    border-bottom: 1.5px solid rgba(255,246,249,0.3);
+    padding: 8px 0; font-family: 'Poppins', sans-serif; font-size: 1rem;
+    color: var(--paper); outline: none; transition: border-color 0.3s;
   }
-  .rsvp-input:focus { border-color: var(--teal); }
-  .rsvp-input::placeholder { color: rgba(242,234,210,0.3); }
+  .rsvp-input:focus { border-color: var(--pink); }
+  .rsvp-input::placeholder { color: rgba(255,246,249,0.35); }
 
-  .rsvp-choices {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 26px;
-  }
+  .rsvp-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 26px; }
   .rsvp-choice {
-    border: 1.5px solid rgba(242,234,210,0.25);
-    background: transparent;
-    padding: 14px;
-    cursor: pointer;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.92rem;
-    color: var(--paper);
-    text-align: center;
-    border-radius: 2px;
-    transition: all 0.25s;
+    border: 1.5px solid rgba(255,246,249,0.3); background: transparent;
+    padding: 14px; cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 0.9rem;
+    color: var(--paper); text-align: center; border-radius: 4px; transition: all 0.25s; font-weight: 500;
   }
-  .rsvp-choice:hover { border-color: var(--teal); }
-  .rsvp-choice.selected-yes { border-color: var(--teal); background: rgba(21,160,148,0.12); color: var(--teal); }
-  .rsvp-choice.selected-no { border-color: var(--no); background: rgba(163,64,47,0.12); color: #e2a294; }
+  .rsvp-choice:hover { border-color: var(--pink); }
+  .rsvp-choice.selected-yes { border-color: var(--pink); background: rgba(255,61,148,0.15); color: var(--pink-soft); }
+  .rsvp-choice.selected-no { border-color: var(--no); background: rgba(192,57,43,0.15); color: #e2a294; }
 
   .rsvp-submit {
-    width: 100%;
-    background: var(--teal);
-    color: var(--ink);
-    border: none;
-    padding: 16px;
-    font-family: 'Fraunces', serif;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    letter-spacing: 0.02em;
-    transition: background 0.3s, transform 0.2s;
+    width: 100%; background: linear-gradient(135deg, var(--pink), var(--pink-deep));
+    color: #fff; border: none; padding: 16px;
+    font-family: 'Pinyon Script', cursive; font-size: 1.5rem;
+    cursor: pointer; transition: filter 0.3s, transform 0.2s; border-radius: 4px;
   }
-  .rsvp-submit:hover { background: var(--gold); transform: translateY(-1px); }
+  .rsvp-submit:hover { filter: brightness(1.12); transform: translateY(-1px); }
   .rsvp-submit:disabled { opacity: 0.5; cursor: default; transform: none; }
 
-  .rsvp-message { text-align: center; margin-top: 16px; min-height: 22px; font-size: 0.9rem; color: var(--teal); }
+  .rsvp-message { text-align: center; margin-top: 16px; min-height: 22px; font-size: 0.9rem; color: var(--pink-soft); }
 
   .attendee-block { margin-top: 40px; }
-  .attendee-block h3 {
-    font-family: 'Fraunces', serif;
-    font-size: 1.2rem;
-    text-align: center;
-    color: var(--paper);
-    margin-bottom: 4px;
-  }
-  .attendee-summary { text-align: center; color: rgba(242,234,210,0.4); font-size: 0.82rem; margin-bottom: 18px; }
+  .attendee-block h3 { text-align: center; color: var(--pink-soft); margin-bottom: 4px; font-size: 2rem; }
+  .attendee-summary { text-align: center; color: rgba(255,246,249,0.4); font-size: 0.82rem; margin-bottom: 18px; }
   .attendee-list { display: flex; flex-direction: column; gap: 8px; }
   .attendee-item {
-    background: rgba(242,234,210,0.05);
-    border: 1px solid rgba(242,234,210,0.1);
-    padding: 12px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 2px;
-    font-size: 0.9rem;
+    background: rgba(255,246,249,0.05); border: 1px solid rgba(255,246,249,0.12);
+    padding: 12px 18px; display: flex; align-items: center; justify-content: space-between;
+    border-radius: 4px; font-size: 0.9rem;
   }
-  .attendee-badge { font-size: 0.62rem; letter-spacing: 0.15em; color: var(--teal); }
+  .attendee-badge { font-size: 0.65rem; letter-spacing: 0.1em; color: var(--pink-soft); font-weight: 600; }
   .attendee-badge.no { color: #c77a68; }
 
   .creator-toggle { text-align: center; margin-top: 18px; }
   .creator-toggle button {
-    background: transparent;
-    border: 1px solid rgba(242,234,210,0.2);
-    color: rgba(242,234,210,0.5);
-    padding: 8px 20px;
-    font-family: 'IBM Plex Mono', monospace;
-    cursor: pointer;
-    font-size: 0.82rem;
-    letter-spacing: 0.05em;
-    transition: all 0.3s;
-    border-radius: 2px;
+    background: transparent; border: 1px solid rgba(255,246,249,0.2); color: rgba(255,246,249,0.5);
+    padding: 8px 20px; font-family: 'Poppins', sans-serif; cursor: pointer; font-size: 0.82rem;
+    letter-spacing: 0.03em; transition: all 0.3s; border-radius: 4px;
   }
-  .creator-toggle button:hover { border-color: var(--teal); color: var(--teal); }
+  .creator-toggle button:hover { border-color: var(--pink); color: var(--pink-soft); }
 
-  .creator-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.75);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+  /* ── LOCATION (bottom) ── */
+  #location { padding: 10px 20px 90px; display: flex; flex-direction: column; align-items: center; }
+  .location-container { width: min(560px, 92vw); }
+  .location-card {
+    background: var(--paper); color: #2a0e1f; border-radius: 6px;
+    padding: 36px 32px; text-align: center; box-shadow: 0 24px 60px rgba(0,0,0,0.45);
   }
+  .location-name { font-size: 1.3rem; font-weight: 600; margin: 6px 0 2px; }
+  .location-address { color: #8a7268; font-size: 0.95rem; margin-bottom: 18px; }
+  .location-map-link {
+    display: inline-block; background: linear-gradient(135deg, var(--pink), var(--pink-deep));
+    color: #fff; padding: 11px 26px; font-family: 'Pinyon Script', cursive; font-size: 1.3rem;
+    text-decoration: none; border-radius: 4px; transition: filter 0.3s;
+  }
+  .location-map-link:hover { filter: brightness(1.12); }
+
+  .creator-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
   .creator-modal.show { display: flex; }
-  .creator-modal-inner {
-    background: var(--paper);
-    color: var(--ink);
-    padding: 40px;
-    width: min(380px, 90vw);
-    text-align: center;
-    border-radius: 4px;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.5);
-  }
-  .creator-modal-inner h3 { font-family: 'Fraunces', serif; font-size: 1.3rem; margin-bottom: 8px; }
-  .creator-modal-inner p { color: #6b6248; font-size: 0.88rem; margin-bottom: 20px; }
+  .creator-modal-inner { background: var(--paper); color: #2a0e1f; padding: 40px; width: min(380px, 90vw); text-align: center; border-radius: 6px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); }
+  .creator-modal-inner h3 { font-family: 'Pinyon Script', cursive; font-size: 2rem; margin-bottom: 8px; color: var(--pink-deep); }
+  .creator-modal-inner p { color: #8a7268; font-size: 0.88rem; margin-bottom: 20px; }
   .creator-modal-inner input {
-    width: 100%;
-    border: none;
-    border-bottom: 1.5px solid var(--teal-dark);
-    padding: 10px 0;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 1.05rem;
-    text-align: center;
-    outline: none;
-    background: transparent;
-    letter-spacing: 0.3em;
-    margin-bottom: 20px;
-    color: var(--ink);
+    width: 100%; border: none; border-bottom: 1.5px solid var(--pink-deep); padding: 10px 0;
+    font-family: 'Poppins', sans-serif; font-size: 1.05rem; text-align: center; outline: none;
+    background: transparent; letter-spacing: 0.3em; margin-bottom: 20px; color: #2a0e1f;
   }
   .creator-modal-inner .btn-row { display: flex; gap: 12px; }
-  .creator-modal-inner button.action {
-    flex: 1;
-    padding: 12px;
-    font-family: 'Fraunces', serif;
-    cursor: pointer;
-    border: none;
-    border-radius: 2px;
-    font-size: 0.92rem;
-  }
-  .btn-confirm { background: var(--ink); color: var(--paper); }
-  .btn-cancel { background: transparent; border: 1px solid #ccc4a8 !important; color: #4a4430; }
+  .creator-modal-inner button.action { flex: 1; padding: 12px; font-family: 'Poppins', sans-serif; font-weight: 600; cursor: pointer; border: none; border-radius: 4px; font-size: 0.9rem; }
+  .btn-confirm { background: var(--pink-deep); color: #fff; }
+  .btn-cancel { background: transparent; border: 1px solid #ddc8ce !important; color: #6b4a58; }
   .pin-error { color: var(--no); font-size: 0.82rem; margin-top: 12px; }
 
-  /* ── shared ── */
   .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
-  .section-rule {
-    width: min(560px, 92vw);
-    height: 1px;
-    background: linear-gradient(to right, transparent, rgba(203,165,53,0.4), transparent);
-    margin: 0 auto 50px;
-  }
+  .section-rule { width: min(560px, 92vw); height: 1px; background: linear-gradient(to right, transparent, rgba(240,194,75,0.45), transparent); margin: 0 auto 50px; }
 
   @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
@@ -524,74 +443,80 @@
 
   @media (max-width: 600px) {
     .vault-wrapper { width: min(320px, 82vw); }
-    .detail-card, .schedule-card, .rsvp-card { padding: 32px 22px; }
+    .detail-card, .schedule-card, .rsvp-card, .location-card { padding: 32px 22px; }
     .detail-grid { grid-template-columns: 1fr; }
     .rsvp-choices { grid-template-columns: 1fr; }
-    .section-heading { font-size: 1.7rem; }
   }
 </style>
 </head>
 <body>
 
+<!-- full-page money, spawned on vault open -->
+<div class="global-money-fall" id="fallingMoney"></div>
+
 <!-- SECTION 1: VAULT -->
 <section id="hero">
-  <p class="hero-plaque">You're invited to crack the vault</p>
+  <h1 class="hero-title script">Ms. Moni</h1>
+  <p class="hero-sub">turns 21 &middot; crack the vault to see how</p>
 
   <div class="vault-wrapper">
     <div class="vault-scene" id="vaultScene">
 
       <div class="vault-room">
-        <div class="cash-stack s1"></div>
-        <div class="cash-stack s2"></div>
-        <div class="cash-stack s3"></div>
+        <div class="cash-stack back b1"></div>
+        <div class="cash-stack back b2"></div>
+        <div class="cash-stack back b3"></div>
+        <div class="cash-stack front f1"></div>
+        <div class="cash-stack front f2"></div>
+        <div class="cash-stack front f3"></div>
+        <div class="coin-pile">
+          <div class="coin"></div><div class="coin"></div><div class="coin"></div><div class="coin"></div>
+          <div class="coin"></div><div class="coin"></div><div class="coin"></div><div class="coin"></div>
+        </div>
       </div>
 
       <div class="vault-door">
         <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="150" cy="150" r="148" fill="#2a3542"/>
-          <circle cx="150" cy="150" r="148" fill="none" stroke="#3f4e5f" stroke-width="2"/>
-          <circle cx="150" cy="150" r="128" fill="none" stroke="rgba(203,165,53,0.5)" stroke-width="2"/>
-          <circle cx="150" cy="150" r="112" fill="none" stroke="rgba(21,160,148,0.35)" stroke-width="1"/>
-          <!-- rivets -->
-          <g fill="#171f28">
+          <circle cx="150" cy="150" r="148" fill="#5f4756"/>
+          <circle cx="150" cy="150" r="148" fill="none" stroke="#7c5f6e" stroke-width="2"/>
+          <circle cx="150" cy="150" r="128" fill="none" stroke="rgba(240,194,75,0.6)" stroke-width="2"/>
+          <circle cx="150" cy="150" r="112" fill="none" stroke="rgba(255,61,148,0.4)" stroke-width="1"/>
+          <g fill="#301f28">
             <circle cx="150" cy="30" r="6"/><circle cx="150" cy="270" r="6"/>
             <circle cx="30" cy="150" r="6"/><circle cx="270" cy="150" r="6"/>
             <circle cx="65" cy="65" r="5"/><circle cx="235" cy="65" r="5"/>
             <circle cx="65" cy="235" r="5"/><circle cx="235" cy="235" r="5"/>
           </g>
-          <!-- hinge side shading -->
-          <path d="M2,60 A148,148 0 0 1 2,240 Z" fill="#161d25" opacity="0.5"/>
+          <path d="M2,60 A148,148 0 0 1 2,240 Z" fill="#22141c" opacity="0.5"/>
         </svg>
       </div>
 
       <div class="vault-dial" id="vaultDial" onclick="crackVault()" ontouchend="crackVault(); return false;">
         <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="60" cy="60" r="58" fill="#171f28" stroke="#cba535" stroke-width="2"/>
-          <g stroke="#cba535" stroke-width="2" opacity="0.85">
-            <line x1="60" y1="8"  x2="60" y2="18"  transform="rotate(0 60 60)"/>
-            <line x1="60" y1="8"  x2="60" y2="18"  transform="rotate(30 60 60)"/>
-            <line x1="60" y1="8"  x2="60" y2="18"  transform="rotate(60 60 60)"/>
-            <line x1="60" y1="8"  x2="60" y2="18"  transform="rotate(90 60 60)"/>
-            <line x1="60" y1="8"  x2="60" y2="18"  transform="rotate(120 60 60)"/>
-            <line x1="60" y1="8"  x2="60" y2="18"  transform="rotate(150 60 60)"/>
-            <line x1="60" y1="8"  x2="60" y2="18"  transform="rotate(180 60 60)"/>
-            <line x1="60" y1="8"  x2="60" y2="18"  transform="rotate(210 60 60)"/>
-            <line x1="60" y1="8"  x2="60" y2="18"  transform="rotate(240 60 60)"/>
-            <line x1="60" y1="8"  x2="60" y2="18"  transform="rotate(270 60 60)"/>
-            <line x1="60" y1="8"  x2="60" y2="18"  transform="rotate(300 60 60)"/>
-            <line x1="60" y1="8"  x2="60" y2="18"  transform="rotate(330 60 60)"/>
+          <circle cx="60" cy="60" r="58" fill="#22141c" stroke="#f0c24b" stroke-width="2"/>
+          <g stroke="#f0c24b" stroke-width="2" opacity="0.85">
+            <line x1="60" y1="8" x2="60" y2="18" transform="rotate(0 60 60)"/>
+            <line x1="60" y1="8" x2="60" y2="18" transform="rotate(30 60 60)"/>
+            <line x1="60" y1="8" x2="60" y2="18" transform="rotate(60 60 60)"/>
+            <line x1="60" y1="8" x2="60" y2="18" transform="rotate(90 60 60)"/>
+            <line x1="60" y1="8" x2="60" y2="18" transform="rotate(120 60 60)"/>
+            <line x1="60" y1="8" x2="60" y2="18" transform="rotate(150 60 60)"/>
+            <line x1="60" y1="8" x2="60" y2="18" transform="rotate(180 60 60)"/>
+            <line x1="60" y1="8" x2="60" y2="18" transform="rotate(210 60 60)"/>
+            <line x1="60" y1="8" x2="60" y2="18" transform="rotate(240 60 60)"/>
+            <line x1="60" y1="8" x2="60" y2="18" transform="rotate(270 60 60)"/>
+            <line x1="60" y1="8" x2="60" y2="18" transform="rotate(300 60 60)"/>
+            <line x1="60" y1="8" x2="60" y2="18" transform="rotate(330 60 60)"/>
           </g>
-          <circle cx="60" cy="60" r="30" fill="#2a3542" stroke="#15a094" stroke-width="1.5"/>
-          <g stroke="#cba535" stroke-width="3" stroke-linecap="round">
+          <circle cx="60" cy="60" r="30" fill="#5f4756" stroke="#ff3d94" stroke-width="1.5"/>
+          <g stroke="#f0c24b" stroke-width="3" stroke-linecap="round">
             <line x1="60" y1="60" x2="60" y2="36"/>
             <line x1="60" y1="60" x2="80" y2="72"/>
             <line x1="60" y1="60" x2="40" y2="72"/>
           </g>
-          <circle cx="60" cy="60" r="6" fill="#cba535"/>
+          <circle cx="60" cy="60" r="6" fill="#f0c24b"/>
         </svg>
       </div>
-
-      <div class="falling-bills" id="fallingBills"></div>
 
       <div class="invite-bill-wrap" id="inviteBillWrap">
         <img id="inviteBillImg" src="invite-bill.png" alt="Party invitation"
@@ -615,8 +540,8 @@
 <section id="details">
   <div class="section-rule"></div>
   <div class="details-container">
-    <h2 class="section-heading reveal">Ms. Moni</h2>
-    <p class="section-sub reveal">the details</p>
+    <h2 class="section-heading script">the details</h2>
+    <p class="section-sub">save the date</p>
 
     <div class="detail-card reveal">
       <div class="detail-grid">
@@ -632,10 +557,6 @@
           <div class="detail-label">DRESS CODE</div>
           <div class="detail-value">All denim, top to bottom</div>
         </div>
-        <div class="detail-row full">
-          <div class="detail-label">ADDRESS</div>
-          <div class="detail-value tbd">TBD</div>
-        </div>
       </div>
     </div>
   </div>
@@ -644,31 +565,22 @@
 <!-- SECTION 3: SCHEDULE -->
 <section id="schedule">
   <div class="schedule-container">
-    <h2 class="section-heading reveal">Run of Show</h2>
-    <p class="section-sub reveal">subject to change</p>
+    <h2 class="section-heading script">run of show</h2>
+    <p class="section-sub">subject to change</p>
 
     <div class="schedule-card reveal">
       <ul class="schedule-items">
         <li class="schedule-item">
           <div class="schedule-time">TBD</div>
-          <div>
-            <div class="schedule-event">Doors Open</div>
-            <div class="schedule-desc">Arrive, settle in</div>
-          </div>
+          <div><div class="schedule-event">Doors Open</div><div class="schedule-desc">Arrive, settle in</div></div>
         </li>
         <li class="schedule-item">
           <div class="schedule-time">TBD</div>
-          <div>
-            <div class="schedule-event">Dinner</div>
-            <div class="schedule-desc">Food &amp; a toast</div>
-          </div>
+          <div><div class="schedule-event">Dinner</div><div class="schedule-desc">Food &amp; a toast</div></div>
         </li>
         <li class="schedule-item">
           <div class="schedule-time">TBD</div>
-          <div>
-            <div class="schedule-event">The Party</div>
-            <div class="schedule-desc">Music, cake, dancing</div>
-          </div>
+          <div><div class="schedule-event">The Party</div><div class="schedule-desc">Music, cake, dancing</div></div>
         </li>
       </ul>
     </div>
@@ -678,8 +590,8 @@
 <!-- SECTION 4: RSVP -->
 <section id="rsvp">
   <div class="rsvp-container">
-    <h2 class="section-heading reveal">You in?</h2>
-    <p class="section-sub reveal">let us know by the 17th</p>
+    <h2 class="section-heading script">you in?</h2>
+    <p class="section-sub">let us know by the 17th</p>
 
     <div class="rsvp-card reveal">
       <div class="rsvp-field">
@@ -693,19 +605,31 @@
           <button class="rsvp-choice" id="btnNo" onclick="selectRsvp('no')">Can't make it</button>
         </div>
       </div>
-      <button class="rsvp-submit" id="rsvpSubmit" onclick="submitRsvp()">Lock it in →</button>
+      <button class="rsvp-submit" id="rsvpSubmit" onclick="submitRsvp()">Lock it in</button>
       <p class="rsvp-message" id="rsvpMsg"></p>
     </div>
 
     <div class="attendee-block">
-      <h3>Who's in <span id="attendeeCount" style="color:var(--teal); font-size:0.9rem;"></span></h3>
+      <h3 class="script">who's in <span id="attendeeCount" style="color:var(--pink-soft); font-family:'Poppins',sans-serif; font-size:0.9rem;"></span></h3>
       <p class="attendee-summary" id="attendeeSummary"></p>
       <div class="attendee-list" id="attendeeList">
-        <p style="color:rgba(242,234,210,0.3); text-align:center; font-size:0.9rem; padding:14px 0;">No replies yet — be the first.</p>
+        <p style="color:rgba(255,246,249,0.3); text-align:center; font-size:0.9rem; padding:14px 0;">No replies yet — be the first.</p>
       </div>
       <div class="creator-toggle">
         <button onclick="showCreatorModal()">Creator view — see all replies</button>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: LOCATION -->
+<section id="location">
+  <div class="location-container">
+    <div class="location-card reveal">
+      <div style="font-size:1.6rem;">💌</div>
+      <div class="location-name">46544 Galway Drive</div>
+      <div class="location-address">Novi, MI</div>
+      <a class="location-map-link" href="https://maps.google.com/?q=46544+Galway+Drive,+Novi,+MI" target="_blank" rel="noopener">Open in Maps</a>
     </div>
   </div>
 </section>
@@ -765,25 +689,26 @@
     scene.classList.add('spinning');
 
     setTimeout(() => scene.classList.add('opened'), 900);
-    setTimeout(() => spawnBills(scene), 1500);
+    setTimeout(() => spawnMoney(), 1500);
     setTimeout(() => scene.classList.add('dropped'), 2600);
     setTimeout(() => scrollHint.classList.add('show'), 4300);
   };
 
-  function spawnBills(scene) {
-    const container = document.getElementById('fallingBills');
-    const count = 34;
+  function spawnMoney() {
+    const container = document.getElementById('fallingMoney');
+    const count = 70;
     for (let i = 0; i < count; i++) {
-      const bill = document.createElement('div');
-      bill.className = 'bill';
-      bill.style.setProperty('--left', (Math.random() * 92) + '%');
-      bill.style.setProperty('--fall-dur', (2 + Math.random() * 1.4).toFixed(2) + 's');
-      bill.style.setProperty('--fall-delay', (Math.random() * 1.1).toFixed(2) + 's');
-      bill.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
-      bill.style.setProperty('--spin', (Math.random() * 500 - 250) + 'deg');
-      container.appendChild(bill);
+      const piece = document.createElement('div');
+      const isCoin = Math.random() < 0.35;
+      piece.className = 'money-piece ' + (isCoin ? 'coin' : 'bill');
+      piece.style.setProperty('--left', (Math.random() * 96) + '%');
+      piece.style.setProperty('--fall-dur', (2.4 + Math.random() * 1.8) + 's');
+      piece.style.setProperty('--fall-delay', (Math.random() * 1.6) + 's');
+      piece.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
+      piece.style.setProperty('--spin', (Math.random() * 520 - 260) + 'deg');
+      container.appendChild(piece);
     }
-    setTimeout(() => { container.innerHTML = ''; }, 4500);
+    setTimeout(() => { container.innerHTML = ''; }, 5000);
   }
 
   // ── RSVP CHOICE ──
@@ -815,7 +740,7 @@
       console.error('Firestore error:', e);
       msg.textContent = 'Something went wrong. Please try again.';
       btn.disabled    = false;
-      btn.textContent = 'Lock it in →';
+      btn.textContent = 'Lock it in';
       return;
     }
 
@@ -824,7 +749,7 @@
         to_email:   NOTIFY_EMAIL,
         guest_name: name,
         response:   attending ? 'Attending' : 'Not attending',
-        event:      "Ms. Moni's Birthday",
+        event:      "Ms. Moni's 21st",
         event_date: 'Saturday, October 24',
         timestamp:  new Date().toLocaleString('en-US', { timeZone: 'America/Detroit' })
       });
@@ -851,7 +776,7 @@
     if (!creatorMode) return;
 
     if (guests.length === 0) {
-      list.innerHTML = '<p style="color:rgba(242,234,210,0.3);text-align:center;font-size:0.9rem;padding:14px 0;">No replies yet.</p>';
+      list.innerHTML = '<p style="color:rgba(255,246,249,0.3);text-align:center;font-size:0.9rem;padding:14px 0;">No replies yet.</p>';
       return;
     }
     guests.forEach(g => {
