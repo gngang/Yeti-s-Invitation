@@ -329,17 +329,17 @@
   .vault-scene.spinning ~ .vault-hint,
   .vault-scene.opened ~ .vault-hint { display: none; }
 
-  /* the invite bill — her real PNG. Fixed to the viewport so it never
-     scrolls away once it lands; sits above the money rain. */
+  /* the invite bill — her real PNG. Anchored over the vault, in normal
+     page flow, so it scrolls away with the hero and reappears when you
+     scroll back up to it. Sits above the money rain. */
   .invite-bill-wrap {
-    position: fixed;
+    position: absolute;
     left: 50%;
-    top: 50%;
-    width: min(250px, 60vw);
-    transform: translate(-50%, -50%) translateY(-140vh) scale(0.92) rotate(-6deg);
+    top: -85%;
+    width: min(260px, 62%);
+    transform: translateX(-50%) scale(0.92) rotate(-6deg);
     z-index: 10000;
     opacity: 0;
-    pointer-events: none;
   }
   .invite-bill-wrap.dropped {
     animation: inviteDrop 4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
@@ -348,15 +348,15 @@
     animation: inviteSettle 1.3s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   }
   @keyframes inviteDrop {
-    0%   { transform: translate(-50%, -50%) translateY(-140vh) scale(0.92) rotate(-7deg); opacity: 0; }
+    0%   { top: -85%; opacity: 0; transform: translateX(-50%) scale(0.92) rotate(-7deg); }
     8%   { opacity: 1; }
-    60%  { transform: translate(-50%, -50%) translateY(6vh)   scale(0.98) rotate(4deg); }
-    85%  { transform: translate(-50%, -50%) translateY(-2vh)  scale(1)    rotate(-2deg); }
-    100% { transform: translate(-50%, -50%) translateY(0)     scale(1)    rotate(0deg); opacity: 1; }
+    60%  { top: 36%; transform: translateX(-50%) scale(0.98) rotate(4deg); }
+    85%  { top: 29%; transform: translateX(-50%) scale(1) rotate(-2deg); }
+    100% { top: 32%; opacity: 1; transform: translateX(-50%) scale(1) rotate(0deg); }
   }
   @keyframes inviteSettle {
-    0%   { transform: translate(-50%, -50%) translateY(0) scale(1)     rotate(0deg); }
-    100% { transform: translate(-50%, -50%) translateY(0) scale(1.28)  rotate(0deg); }
+    0%   { top: 32%; transform: translateX(-50%) scale(1)   rotate(0deg); }
+    100% { top: 24%; transform: translateX(-50%) scale(1.7) rotate(0deg); }
   }
   .invite-bill-wrap img {
     width: 100%; display: block; border-radius: 6px;
@@ -540,14 +540,6 @@
 <!-- full-page money, spawned on vault open -->
 <div class="global-money-fall" id="fallingMoney"></div>
 
-<div class="invite-bill-wrap" id="inviteBillWrap">
-  <img id="inviteBillImg" src="invite-bill.jpg" alt="Party invitation"
-       onerror="this.style.display='none'; document.getElementById('inviteFallback').style.display='flex';">
-  <div class="invite-bill-fallback" id="inviteFallback" style="display:none;">
-    Drop in invite-bill.jpg<br>(the $100 bill with her face + party info)
-  </div>
-</div>
-
 <!-- SECTION 1: VAULT -->
 <section id="hero">
   <h1 class="hero-title script">Ms. Moni</h1>
@@ -655,6 +647,14 @@
           </g>
           <circle cx="60" cy="60" r="6" fill="#f0c24b"/>
         </svg>
+      </div>
+    </div>
+
+    <div class="invite-bill-wrap" id="inviteBillWrap">
+      <img id="inviteBillImg" src="invite-bill.jpg" alt="Party invitation"
+           onerror="this.style.display='none'; document.getElementById('inviteFallback').style.display='flex';">
+      <div class="invite-bill-fallback" id="inviteFallback" style="display:none;">
+        Drop in invite-bill.jpg<br>(the $100 bill with her face + party info)
       </div>
     </div>
 
@@ -829,8 +829,9 @@
     setTimeout(() => bill.classList.add('dropped'), 2600);
     setTimeout(() => bill.classList.add('settled'), 2600 + 4000 + 150);
     setTimeout(() => {
-      // lock the final zoomed-in state directly, so it holds no matter what
-      bill.style.transform = 'translate(-50%, -50%) scale(1.28) rotate(0deg)';
+      // lock the final, bigger state directly, so it holds no matter what
+      bill.style.top = '24%';
+      bill.style.transform = 'translateX(-50%) scale(1.7) rotate(0deg)';
       bill.style.opacity = '1';
     }, 2600 + 4000 + 150 + 1300 + 100);
     setTimeout(() => scrollHint.classList.add('show'), 2600 + 4000 + 150 + 1300 + 400);
