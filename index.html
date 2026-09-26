@@ -274,6 +274,15 @@
   .gold-bar.filler.g2 { left: 40%; top: 7%;  transform: rotate(3deg); }
   .gold-bar.filler.g3 { left: 63%; top: 9%;  transform: rotate(-3deg); }
   .gold-bar.filler.g4 { left: 85%; top: 11%; width: 9%; transform: rotate(4deg); }
+  .gold-bar.filler.g5 { left: 3%;  top: 33%; transform: rotate(5deg); }
+  .gold-bar.filler.g6 { left: 24%; top: 30%; transform: rotate(-4deg); }
+  .gold-bar.filler.g7 { left: 47%; top: 34%; transform: rotate(3deg); }
+  .gold-bar.filler.g8 { left: 69%; top: 30%; transform: rotate(-3deg); }
+  .gold-bar.filler.g9 { left: 90%; top: 33%; width: 9%; transform: rotate(4deg); }
+  .gold-bar.filler.g10 { left: 13%; top: 56%; transform: rotate(-3deg); }
+  .gold-bar.filler.g11 { left: 33%; top: 58%; transform: rotate(4deg); }
+  .gold-bar.filler.g12 { left: 55%; top: 56%; transform: rotate(-4deg); }
+  .gold-bar.filler.g13 { left: 78%; top: 59%; transform: rotate(3deg); }
 
   /* the round door */
   .vault-door {
@@ -320,25 +329,32 @@
   .vault-scene.spinning ~ .vault-hint,
   .vault-scene.opened ~ .vault-hint { display: none; }
 
-  /* the invite bill — her real PNG lands here */
+  /* the invite bill — her real PNG lands here, above the money rain */
   .invite-bill-wrap {
     position: absolute;
     left: 50%;
-    top: -70%;
-    width: min(280px, 66%);
-    transform: translateX(-50%) rotate(-8deg);
-    z-index: 7;
+    top: -80%;
+    width: min(250px, 60%);
+    transform: translateX(-50%) scale(1) rotate(-6deg);
+    z-index: 10000;
     opacity: 0;
   }
-  .vault-scene.dropped .invite-bill-wrap {
-    animation: inviteDrop 1.5s cubic-bezier(0.18, 0.9, 0.32, 1.25) forwards;
+  .vault-scene.dropped ~ .invite-bill-wrap {
+    animation: inviteDrop 3.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  }
+  .vault-scene.settled ~ .invite-bill-wrap {
+    animation: inviteSettle 1.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   }
   @keyframes inviteDrop {
-    0%   { top: -70%; opacity: 0; transform: translateX(-50%) rotate(-9deg); }
-    12%  { opacity: 1; }
-    68%  { top: 34%; transform: translateX(-50%) rotate(7deg); }
-    84%  { top: 29%; transform: translateX(-50%) rotate(-3deg); }
-    100% { top: 32%; transform: translateX(-50%) rotate(0deg); }
+    0%   { top: -80%; opacity: 0; transform: translateX(-50%) scale(0.94) rotate(-7deg); }
+    8%   { opacity: 1; }
+    35%  { top: 5%;   transform: translateX(-50%) scale(0.97) rotate(4deg); }
+    65%  { top: 22%;  transform: translateX(-50%) scale(1) rotate(-3deg); }
+    100% { top: 30%;  transform: translateX(-50%) scale(1) rotate(0deg); }
+  }
+  @keyframes inviteSettle {
+    0%   { top: 30%; transform: translateX(-50%) scale(1); }
+    100% { top: 26%; transform: translateX(-50%) scale(1.22); }
   }
   .invite-bill-wrap img {
     width: 100%; display: block; border-radius: 6px;
@@ -563,6 +579,15 @@
           <div class="gold-bar row-top"></div><div class="gold-bar row-top"></div>
           <div class="gold-bar row-top"></div>
         </div>
+        <div class="gold-bar filler g5"></div>
+        <div class="gold-bar filler g6"></div>
+        <div class="gold-bar filler g7"></div>
+        <div class="gold-bar filler g8"></div>
+        <div class="gold-bar filler g9"></div>
+        <div class="gold-bar filler g10"></div>
+        <div class="gold-bar filler g11"></div>
+        <div class="gold-bar filler g12"></div>
+        <div class="gold-bar filler g13"></div>
       </div>
 
       <div class="vault-door">
@@ -621,13 +646,13 @@
           <circle cx="60" cy="60" r="6" fill="#f0c24b"/>
         </svg>
       </div>
+    </div>
 
-      <div class="invite-bill-wrap" id="inviteBillWrap">
-        <img id="inviteBillImg" src="invite-bill.jpg" alt="Party invitation"
-             onerror="this.style.display='none'; document.getElementById('inviteFallback').style.display='flex';">
-        <div class="invite-bill-fallback" id="inviteFallback" style="display:none;">
-          Drop in invite-bill.jpg<br>(the $100 bill with her face + party info)
-        </div>
+    <div class="invite-bill-wrap" id="inviteBillWrap">
+      <img id="inviteBillImg" src="invite-bill.jpg" alt="Party invitation"
+           onerror="this.style.display='none'; document.getElementById('inviteFallback').style.display='flex';">
+      <div class="invite-bill-fallback" id="inviteFallback" style="display:none;">
+        Drop in invite-bill.jpg<br>(the $100 bill with her face + party info)
       </div>
     </div>
 
@@ -799,7 +824,8 @@
     setTimeout(() => scene.classList.add('opened'), 900);
     setTimeout(() => spawnMoney(), 1500);
     setTimeout(() => scene.classList.add('dropped'), 2600);
-    setTimeout(() => scrollHint.classList.add('show'), 4300);
+    setTimeout(() => scene.classList.add('settled'), 6000);
+    setTimeout(() => scrollHint.classList.add('show'), 7200);
   };
 
   function spawnMoney() {
