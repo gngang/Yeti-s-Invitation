@@ -576,11 +576,18 @@
 
       <div class="vault-door">
         <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="150" cy="150" r="148" fill="#5f4756"/>
-          <circle cx="150" cy="150" r="148" fill="none" stroke="#7c5f6e" stroke-width="2"/>
+          <defs>
+            <linearGradient id="doorMetal" x1="15%" y1="10%" x2="85%" y2="95%">
+              <stop offset="0%" stop-color="#8a9bb0"/>
+              <stop offset="45%" stop-color="#4c5f75"/>
+              <stop offset="100%" stop-color="#212c39"/>
+            </linearGradient>
+          </defs>
+          <circle cx="150" cy="150" r="148" fill="url(#doorMetal)"/>
+          <circle cx="150" cy="150" r="148" fill="none" stroke="#8a9bb0" stroke-width="2"/>
           <circle cx="150" cy="150" r="128" fill="none" stroke="rgba(240,194,75,0.6)" stroke-width="2"/>
           <circle cx="150" cy="150" r="112" fill="none" stroke="rgba(74,123,168,0.5)" stroke-width="1"/>
-          <g fill="#301f28">
+          <g fill="#1a2634">
             <circle cx="150" cy="30" r="6"/><circle cx="150" cy="270" r="6"/>
             <circle cx="30" cy="150" r="6"/><circle cx="270" cy="150" r="6"/>
             <circle cx="65" cy="65" r="5"/><circle cx="235" cy="65" r="5"/>
@@ -592,7 +599,14 @@
 
       <div class="vault-dial" id="vaultDial" onclick="crackVault()" ontouchend="crackVault(); return false;">
         <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="60" cy="60" r="58" fill="#22141c" stroke="#f0c24b" stroke-width="2"/>
+          <defs>
+            <radialGradient id="dialMetal" cx="35%" cy="30%" r="75%">
+              <stop offset="0%" stop-color="#93a4b8"/>
+              <stop offset="60%" stop-color="#4c5f75"/>
+              <stop offset="100%" stop-color="#212c39"/>
+            </radialGradient>
+          </defs>
+          <circle cx="60" cy="60" r="58" fill="#1a2634" stroke="#f0c24b" stroke-width="2"/>
           <g stroke="#f0c24b" stroke-width="2" opacity="0.85">
             <line x1="60" y1="8" x2="60" y2="18" transform="rotate(0 60 60)"/>
             <line x1="60" y1="8" x2="60" y2="18" transform="rotate(30 60 60)"/>
@@ -607,7 +621,7 @@
             <line x1="60" y1="8" x2="60" y2="18" transform="rotate(300 60 60)"/>
             <line x1="60" y1="8" x2="60" y2="18" transform="rotate(330 60 60)"/>
           </g>
-          <circle cx="60" cy="60" r="30" fill="#5f4756" stroke="#4a7ba8" stroke-width="1.5"/>
+          <circle cx="60" cy="60" r="30" fill="url(#dialMetal)" stroke="#4a7ba8" stroke-width="1.5"/>
           <g stroke="#f0c24b" stroke-width="3" stroke-linecap="round">
             <line x1="60" y1="60" x2="60" y2="36"/>
             <line x1="60" y1="60" x2="80" y2="72"/>
@@ -650,7 +664,7 @@
         </div>
         <div class="detail-row">
           <div class="detail-label">TIME</div>
-          <div class="detail-value tbd">TBD</div>
+          <div class="detail-value">7:00 PM</div>
         </div>
         <div class="detail-row full">
           <div class="detail-label">DRESS CODE</div>
@@ -670,16 +684,20 @@
     <div class="schedule-card reveal">
       <ul class="schedule-items">
         <li class="schedule-item">
-          <div class="schedule-time">TBD</div>
-          <div><div class="schedule-event">Doors Open</div><div class="schedule-desc">Arrive, settle in</div></div>
+          <div class="schedule-time">7:00 PM</div>
+          <div><div class="schedule-event">Doors Open</div><div class="schedule-desc">Denim only, come through</div></div>
         </li>
         <li class="schedule-item">
-          <div class="schedule-time">TBD</div>
-          <div><div class="schedule-event">Dinner</div><div class="schedule-desc">Food &amp; a toast</div></div>
+          <div class="schedule-time">7:30 PM</div>
+          <div><div class="schedule-event">Food</div><div class="schedule-desc">Plates out, eat up</div></div>
         </li>
         <li class="schedule-item">
-          <div class="schedule-time">TBD</div>
-          <div><div class="schedule-event">The Party</div><div class="schedule-desc">Music, cake, dancing</div></div>
+          <div class="schedule-time">8:00 PM</div>
+          <div><div class="schedule-event">DJ Set</div><div class="schedule-desc">Dance floor's open</div></div>
+        </li>
+        <li class="schedule-item">
+          <div class="schedule-time">Late</div>
+          <div><div class="schedule-event">The Party</div><div class="schedule-desc">Til we're done</div></div>
         </li>
       </ul>
     </div>
