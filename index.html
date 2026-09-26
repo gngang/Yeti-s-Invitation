@@ -151,10 +151,11 @@
     inset: 4%;
     border-radius: 50%;
     background:
-      repeating-linear-gradient(0deg, rgba(255,241,201,0.92) 0 3px, rgba(199,154,46,0.95) 3px 7px),
       repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 6px),
+      repeating-linear-gradient(-45deg, rgba(0,0,0,0.09) 0 2px, transparent 2px 6px),
+      radial-gradient(circle at 50% 38%, rgba(240,194,75,0.18), transparent 65%),
       var(--denim-deep);
-    border: 2px dashed rgba(240,194,75,0.5);
+    border: 2px dashed rgba(240,194,75,0.45);
     box-shadow: inset 0 0 44px rgba(0,0,0,0.65);
     z-index: 1;
     overflow: hidden;
@@ -190,35 +191,35 @@
     box-shadow: 0 6px 14px rgba(0,0,0,0.5);
   }
   .cash-stack.back {
-    width: 17%; height: 14%;
+    width: 20%; height: 21%;
     background: repeating-linear-gradient(0deg, var(--cash) 0 3px, var(--cash-dark) 3px 6px);
     border: 1px solid rgba(240,194,75,0.35);
-    opacity: 0.55;
+    opacity: 0.65;
   }
-  .cash-stack.back.b1 { left: 2%;  top: 4%;  transform: rotate(-5deg); }
-  .cash-stack.back.b2 { left: 18%; top: 0%;  transform: rotate(3deg); }
-  .cash-stack.back.b3 { left: 34%; top: 5%;  transform: rotate(-2deg); }
-  .cash-stack.back.b4 { left: 50%; top: 1%;  transform: rotate(4deg); }
-  .cash-stack.back.b5 { left: 66%; top: 6%;  transform: rotate(-3deg); }
-  .cash-stack.back.b6 { left: 81%; top: 2%;  width: 16%; transform: rotate(3deg); }
+  .cash-stack.back.b1 { left: 1%;  top: -2%; transform: rotate(-5deg); }
+  .cash-stack.back.b2 { left: 17%; top: -5%; transform: rotate(3deg); }
+  .cash-stack.back.b3 { left: 33%; top: -1%; transform: rotate(-2deg); }
+  .cash-stack.back.b4 { left: 49%; top: -4%; transform: rotate(4deg); }
+  .cash-stack.back.b5 { left: 65%; top: 0%;  transform: rotate(-3deg); }
+  .cash-stack.back.b6 { left: 80%; top: -3%; width: 19%; transform: rotate(3deg); }
 
   /* middle row — closes the gap between back and front */
   .cash-stack.mid {
-    width: 20%; height: 19%;
+    width: 22%; height: 27%;
     background: repeating-linear-gradient(0deg, var(--cash) 0 3.5px, var(--cash-dark) 3.5px 7px);
     border: 1px solid rgba(240,194,75,0.45);
-    opacity: 0.8;
+    opacity: 0.85;
   }
-  .cash-stack.mid.m1 { left: -1%; top: 22%; transform: rotate(4deg); }
-  .cash-stack.mid.m2 { left: 17%; top: 26%; transform: rotate(-3deg); }
-  .cash-stack.mid.m3 { left: 36%; top: 20%; transform: rotate(2deg); }
-  .cash-stack.mid.m4 { left: 55%; top: 25%; transform: rotate(-4deg); }
-  .cash-stack.mid.m5 { left: 73%; top: 21%; transform: rotate(3deg); }
-  .cash-stack.mid.m6 { left: 89%; top: 27%; width: 16%; transform: rotate(-2deg); }
+  .cash-stack.mid.m1 { left: -2%; top: 15%; transform: rotate(4deg); }
+  .cash-stack.mid.m2 { left: 16%; top: 18%; transform: rotate(-3deg); }
+  .cash-stack.mid.m3 { left: 35%; top: 13%; transform: rotate(2deg); }
+  .cash-stack.mid.m4 { left: 54%; top: 17%; transform: rotate(-4deg); }
+  .cash-stack.mid.m5 { left: 72%; top: 14%; transform: rotate(3deg); }
+  .cash-stack.mid.m6 { left: 88%; top: 19%; width: 18%; transform: rotate(-2deg); }
 
   /* front row — biggest, brightest */
   .cash-stack.front {
-    width: 24%; height: 28%;
+    width: 25%; height: 36%;
     background: repeating-linear-gradient(0deg, var(--cash) 0 4px, var(--cash-dark) 4px 8px);
     border: 1px solid rgba(240,194,75,0.6);
   }
@@ -230,11 +231,11 @@
     font-family: 'Pinyon Script', cursive;
     font-size: 1.2rem;
   }
-  .cash-stack.front.f1 { left: 0%;  bottom: 26%; transform: rotate(-4deg); }
-  .cash-stack.front.f2 { left: 19%; bottom: 22%; height: 34%; transform: rotate(2deg); }
-  .cash-stack.front.f3 { left: 38%; bottom: 27%; height: 24%; transform: rotate(-3deg); }
-  .cash-stack.front.f4 { left: 57%; bottom: 21%; height: 33%; transform: rotate(3deg); }
-  .cash-stack.front.f5 { left: 76%; bottom: 25%; height: 26%; transform: rotate(-2deg); }
+  .cash-stack.front.f1 { left: -1%; bottom: 14%; transform: rotate(-4deg); }
+  .cash-stack.front.f2 { left: 19%; bottom: 12%; height: 42%; transform: rotate(2deg); }
+  .cash-stack.front.f3 { left: 38%; bottom: 16%; height: 32%; transform: rotate(-3deg); }
+  .cash-stack.front.f4 { left: 57%; bottom: 11%; height: 41%; transform: rotate(3deg); }
+  .cash-stack.front.f5 { left: 76%; bottom: 15%; height: 33%; transform: rotate(-2deg); }
 
   /* stacked gold bars — packed two-tier field along the vault floor */
   .gold-bars { position: absolute; left: 2%; bottom: 3%; width: 96%; height: 24%; }
@@ -264,6 +265,13 @@
   .gold-bar.row-top:nth-of-type(13) { left: 54%; }
   .gold-bar.row-top:nth-of-type(14) { left: 66%; }
   .gold-bar.row-top:nth-of-type(15) { left: 78%; }
+
+  /* a few plain gold-bar accents tucked between rows, no clip-path this time */
+  .gold-bar.filler { position: absolute; width: 10%; height: 9%; clip-path: none; }
+  .gold-bar.filler.g1 { left: 6%;  top: 9%;  transform: rotate(-4deg); }
+  .gold-bar.filler.g2 { left: 40%; top: 7%;  transform: rotate(3deg); }
+  .gold-bar.filler.g3 { left: 63%; top: 9%;  transform: rotate(-3deg); }
+  .gold-bar.filler.g4 { left: 85%; top: 11%; width: 9%; transform: rotate(4deg); }
 
   /* the round door */
   .vault-door {
@@ -528,6 +536,10 @@
         <div class="cash-stack back b4"></div>
         <div class="cash-stack back b5"></div>
         <div class="cash-stack back b6"></div>
+        <div class="gold-bar filler g1"></div>
+        <div class="gold-bar filler g2"></div>
+        <div class="gold-bar filler g3"></div>
+        <div class="gold-bar filler g4"></div>
         <div class="cash-stack mid m1"></div>
         <div class="cash-stack mid m2"></div>
         <div class="cash-stack mid m3"></div>
@@ -758,12 +770,12 @@
   const NOTIFY_EMAIL        = 'REPLACE_ME@gmail.com';
 
   const app = initializeApp({
-    apiKey:            "REPLACE_ME",
-    authDomain:        "REPLACE_ME.firebaseapp.com",
-    projectId:         "REPLACE_ME",
-    storageBucket:     "REPLACE_ME.firebasestorage.app",
-    messagingSenderId: "REPLACE_ME",
-    appId:             "REPLACE_ME"
+    apiKey:            "AIzaSyAZ7ST2qPx3J9EYFwf4x_yMWAooKZDwze4",
+    authDomain:        "yeti-s-invite.firebaseapp.com",
+    projectId:         "yeti-s-invite",
+    storageBucket:     "yeti-s-invite.firebasestorage.app",
+    messagingSenderId: "447210065592",
+    appId:             "1:447210065592:web:53583aa1ea880b9d62ee4d"
   });
   const db = getFirestore(app);
 
